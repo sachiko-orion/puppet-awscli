@@ -48,11 +48,12 @@
 # Copyright 2014 Justin Downing
 #
 # see https://tickets.puppetlabs.com/browse/PUP-3829
+file { '/usr/bin/pip-python':
+  ensure => 'link',
+  target => '/usr/bin/pip',
+}
+
 class awscli (
-  file { '/usr/bin/pip-python':
-    ensure => 'link',
-    target => '/usr/bin/pip',
-  } ->
   $version          = 'present',
   $pkg_dev          = $awscli::params::pkg_dev,
   $pkg_pip          = $awscli::params::pkg_pip,
@@ -72,6 +73,7 @@ class awscli (
     require         => [
       Package[$pkg_pip],
       Class['awscli::deps'],
+	  File["/usr/bin/pip-python"],
     ],
   }
 }
