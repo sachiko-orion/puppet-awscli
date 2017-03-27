@@ -49,6 +49,10 @@
 #
 # see https://tickets.puppetlabs.com/browse/PUP-3829
 class awscli (
+  file { '/usr/bin/pip-python':
+    ensure => 'link',
+    target => '/usr/bin/pip',
+  } ->
   $version          = 'present',
   $pkg_dev          = $awscli::params::pkg_dev,
   $pkg_pip          = $awscli::params::pkg_pip,
@@ -56,10 +60,6 @@ class awscli (
   $install_pip      = true,
   $proxy            = $awscli::params::proxy,
   $install_options  = $awscli::params::install_options,
-  file { '/usr/bin/pip-python':
-    ensure => 'link',
-    target => '/usr/bin/pip',
-  }  
 ) inherits awscli::params {
   class { '::awscli::deps':
     proxy => $proxy,
