@@ -73,7 +73,6 @@ class awscli (
     require         => [
       Package[$pkg_pip],
       Class['awscli::deps'],
-	  File["/usr/bin/pip-python"],
     ],
   }
 }
