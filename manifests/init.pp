@@ -48,12 +48,6 @@
 # Copyright 2014 Justin Downing
 #
 # see https://tickets.puppetlabs.com/browse/PUP-3829
-file { '/usr/bin/pip':
-  ensure => 'link',
-  target => '/usr/bin/pip-python',
-  require => Package["python-pip"]
-}
-
 class awscli (
   $version          = 'present',
   $pkg_dev          = $awscli::params::pkg_dev,
@@ -62,6 +56,10 @@ class awscli (
   $install_pip      = true,
   $proxy            = $awscli::params::proxy,
   $install_options  = $awscli::params::install_options,
+  file { '/usr/bin/pip-python':
+    ensure => 'link',
+    target => '/usr/bin/pip',
+  }  
 ) inherits awscli::params {
   class { '::awscli::deps':
     proxy => $proxy,
@@ -73,7 +71,6 @@ class awscli (
     install_options => $install_options,
     require         => [
       Package[$pkg_pip],
-	  File['/usr/bin/pip'],
       Class['awscli::deps'],
     ],
   }
